@@ -1,15 +1,28 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
+const routes = [
+  { id: 1, label: "Contacts", link: "/contacts" },
+  { id: 2, label: "Charts", link: "/chart" },
+  { id: 3, label: "Map", link: "/map" },
+];
+
 const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedTab, setSelectedTab] = useState(routes[0].id);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+
+  const handleSibebar = (id: number) => {
+    setSelectedTab(id);
+    toggleSidebar();
+  };
+
   return (
     <div
-      className={`fixed z-[9999] p-8 inset-y-0 left-0 w-56 bg-gray-200 overflow-y-auto transition-transform duration-300 ease-in-out transform ${
+      className={`fixed z-[9999] inset-y-0 left-0 w-56 bg-gray-200 overflow-y-auto transition-transform duration-300 ease-in-out transform ${
         isOpen ? "translate-x-0" : "-translate-x-[70%]"
       }`}
     >
@@ -45,13 +58,25 @@ const Sidebar: React.FC = () => {
           </svg>
         )}
       </button>
-      <ul className="space-y-4 mt-">
-        <li>
-          <Link to="/contacts" onClick={toggleSidebar}>
-            Contacts
+      <ul className={`space-y-4 mt-16 p-3`}>
+        {routes.map((item, index) => (
+          <Link
+            key={index}
+            to={item.link}
+            onClick={() => handleSibebar(item.id)}
+          >
+            <li
+              className={`p-4 mb-1 cursor-pointer hover:text-white hover:bg-slate-400 transition duration-300 ${
+                selectedTab === item.id && isOpen
+                  ? "bg-slate-600 text-white"
+                  : ""
+              } rounded-md`}
+            >
+              {item.label}
+            </li>
           </Link>
-        </li>
-        <li>
+        ))}
+        {/* <li>
           <Link to="/chart" onClick={toggleSidebar}>
             Charts
           </Link>
@@ -60,7 +85,7 @@ const Sidebar: React.FC = () => {
           <Link to="/map" onClick={toggleSidebar}>
             Map
           </Link>
-        </li>
+        </li> */}
       </ul>
     </div>
   );

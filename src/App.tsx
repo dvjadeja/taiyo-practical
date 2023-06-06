@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { Provider } from "react-redux";
 import Sidebar from "./Components/Sidebar";
 import { store } from "./redux/store";
@@ -31,6 +36,7 @@ function App() {
             <Sidebar />
             <div className="flex-grow p-4 w-11/12 ml-16">
               <Routes>
+                <Route path="*" element={<Navigate to="/contacts" replace />} />
                 <Route path="/contacts" element={<ContactsList />} />
                 <Route path="/add-contact" element={<AddContact />} />
                 <Route path="/edit-contact/:id" element={<EditContact />} />
